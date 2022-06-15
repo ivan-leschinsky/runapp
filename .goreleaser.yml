@@ -1,0 +1,23 @@
+---
+env:
+- CGO_ENABLED=0
+
+before:
+  hooks:
+  - go mod download
+
+build:
+  binary: runapp-{{ .Os }}-{{ .Arch }}
+  goos:
+  - darwin
+  - linux
+  goarch:
+  - amd64
+  - arm64
+
+archives:
+- name_template: "runapp-{{ .Os }}-{{ .Arch }}"
+  format: binary
+
+checksum:
+  name_template: checksums.txt
