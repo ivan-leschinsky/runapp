@@ -2,7 +2,7 @@
 
 Simple app to ensure some app is running on macOS/linux
 
-![Go version](https://img.shields.io/badge/go-1.17-lightblue)
+![Go version](https://img.shields.io/badge/go-1.18-blue)
 
 ---
 

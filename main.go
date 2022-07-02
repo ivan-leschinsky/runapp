@@ -15,9 +15,11 @@ func exit(err error) {
 	os.Exit(1)
 }
 
-func runApp(appPath string) {
+func runApp(appPath string, ShowNotifications bool) {
 	exec.Command("open", appPath).Output()
-	showNotification(fmt.Sprintf("App %s started", appPath), "Go App runner")
+	if ShowNotifications {
+		showNotification(fmt.Sprintf("App %s started", appPath), "Go App runner")
+	}
 }
 func showNotification(text string, title string) {
 	if runtime.GOOS == "darwin" {
@@ -25,17 +27,17 @@ func showNotification(text string, title string) {
 		exec.Command("bash","-c",cmd).Output()
 	}
 }
-func checkApp(appPath string) {
+func checkApp(appPath string, ShowNotifications bool) {
 	cmd := fmt.Sprintf("ps aux | grep \"%s\" | grep -v grep", appPath)
 	out, err := exec.Command("bash","-c",cmd).Output()
 	if err != nil {
 		if err.Error() == "exit status 1" {
-			runApp(appPath)
+			runApp(appPath, ShowNotifications)
 			return;
 		}
 	}
 	if !strings.Contains(string(out), appPath) {
-		runApp(appPath)
+		runApp(appPath, ShowNotifications)
 	}
 }
 
@@ -49,6 +51,6 @@ func main() {
 	}
 
 	for _, appPath := range cfg.Apps {
-		checkApp(appPath)
+		checkApp(appPath, cfg.ShowNotifications)
 	}
 }
